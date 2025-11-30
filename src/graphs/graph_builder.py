@@ -27,10 +27,40 @@ class GraphBuilder:
 
         return self.graph
     
+    def build_language_graph(self):
+        """
+        Build a graph for content generation with inputs topic and language.
+        """
+
+        ## nodes
+        self.graph.add_node("title_creation", self.content_node_obj.title_creation)
+        self.graph.add_node("content_creation", self.content_node_obj.content_creation)
+        self.graph.add_node("chinese_translation", )
+        self.graph.add_node("english_translation", )
+        self.graph.add_node("route", )
+
+        ## edges
+        self.graph.add_edge(START, "title_creation")
+        self.graph.add_edge("title_creation", "content_creation")
+        self.graph.add_edge("content_creation", "route ")
+        self.graph.add_conditional_edges("route", 
+                                         self.content_node_obj.route_decision,
+                                         {"traditional chinese": "chinese_translation",
+                                          "english": "english_translation"})
+        self.graph.add_edge("chinese_translation", END)
+        self.graph.add_edge("english_translation", END)
+        return self.graph
+
+
+    
     def setup_graph(self, usecase):
         if usecase == "topic":
             self.build_topic_graph()
+        if usecase == "language":
+            self.build_language_graph()
+            
         return self.graph.compile()
+
     
 ## below code is for the langsmith langgraph studio
 llm=GroqLLM().get_llm()
