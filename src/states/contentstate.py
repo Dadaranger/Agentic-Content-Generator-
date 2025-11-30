@@ -8,5 +8,5 @@ class Maincontent(BaseModel):
 
 class ContentState(TypedDict):
     topic: str 
-    content: Maincontent
+    blog: Maincontent
     current_language: str
